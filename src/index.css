@@ -1,0 +1,341 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./assets/fonts/inter-latin-variable.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Vazirmatn";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./assets/fonts/vazirmatn-arabic-variable.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF,
+    U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74,
+    U+FE76-FEFC;
+}
+
+@font-face {
+  font-family: "Vazirmatn";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./assets/fonts/vazirmatn-latin-variable.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-warning-foreground: var(--warning-foreground);
+  --font-sans: "Inter", "Vazirmatn", "Segoe UI", sans-serif;
+  --spacing-sidebar: 264px;
+}
+
+:root {
+  color-scheme: light;
+  --canvas: #f4f7f7;
+  --surface: #ffffff;
+  --surface-raised: #f8fbfb;
+  --border: #e3e9e9;
+  --foreground: #172626;
+  --muted: #667474;
+  --accent: #0f766e;
+  --accent-strong: #115e59;
+  --on-accent: #ffffff;
+  --warning-foreground: #78350f;
+}
+
+:root.dark {
+  color-scheme: dark;
+  --canvas: #111817;
+  --surface: #192120;
+  --surface-raised: #202a29;
+  --border: #2b3836;
+  --foreground: #e8f0ee;
+  --muted: #93a29f;
+  --accent: #43d6c4;
+  --accent-strong: #25b8a7;
+  --on-accent: #0b2825;
+  --warning-foreground: #fde68a;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--canvas);
+  }
+
+  body {
+    min-height: 100vh;
+    margin: 0;
+    background: var(--canvas);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button,
+  input {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  :is(button, .primary-button, .secondary-button, .danger-button):not(:disabled) {
+    transition: transform 120ms ease, background-color 160ms ease, color 160ms ease;
+  }
+
+  :is(button, .primary-button, .secondary-button, .danger-button):not(:disabled):active {
+    transform: scale(0.985);
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+}
+
+@utility app-frame {
+  @apply min-h-screen bg-canvas text-foreground;
+}
+
+@utility sidebar {
+  @apply fixed inset-y-0 left-0 z-40 flex w-sidebar flex-col overflow-y-auto border-r border-border bg-surface px-4 py-5;
+}
+
+@utility sidebar-brand {
+  @apply mb-9 flex items-center gap-3 px-2;
+}
+
+@utility brand-mark {
+  @apply flex size-10 items-center justify-center rounded-xl bg-accent text-[var(--on-accent)];
+}
+
+@utility nav-link {
+  @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-surface-raised hover:text-foreground;
+}
+
+@utility nav-link-active {
+  @apply bg-accent/10 text-accent;
+}
+
+@utility sidebar-section-label {
+  @apply mb-2 px-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted;
+}
+
+@utility topbar {
+  @apply sticky top-0 z-20 flex h-[76px] items-center justify-between border-b border-border bg-canvas/90 px-5 backdrop-blur-md sm:px-8;
+}
+
+@utility icon-button {
+  @apply inline-flex size-10 items-center justify-center rounded-xl border border-border bg-surface text-muted transition-colors hover:bg-surface-raised hover:text-foreground;
+}
+
+@utility primary-button {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-[var(--on-accent)] transition-colors hover:bg-accent-strong;
+}
+
+@utility content-card {
+  @apply min-w-0 rounded-2xl border border-border bg-surface p-5 transition-[border-color,box-shadow] duration-200;
+
+  &:hover {
+    @apply border-border shadow-md shadow-black/5;
+  }
+}
+
+@utility stat-card {
+  @apply content-card flex min-h-36 flex-col justify-between;
+}
+
+@utility page-title {
+  @apply text-2xl font-semibold tracking-tight text-foreground sm:text-[28px];
+}
+
+@utility empty-state {
+  @apply flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-border px-5 py-8 text-center;
+}
+
+@utility mobile-overlay {
+  @apply fixed inset-0 z-30 bg-black/50 transition-opacity;
+}
+
+@utility form-field {
+  @apply flex flex-col gap-2;
+}
+
+@utility field-label {
+  @apply text-sm font-medium text-foreground;
+}
+
+@utility field-input {
+  @apply w-full rounded-xl border border-border bg-canvas px-3.5 py-2.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/15;
+}
+
+@utility field-error {
+  @apply text-xs text-red-700 dark:text-red-400;
+}
+
+@utility secondary-button {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface-raised;
+}
+
+@utility search-field {
+  @apply flex min-h-11 items-center gap-2.5 rounded-xl border border-border bg-surface px-3.5 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/15;
+
+  & input {
+    @apply min-w-0 flex-1 bg-transparent py-2.5 text-sm text-foreground outline-none placeholder:text-muted;
+  }
+}
+
+@utility filter-select {
+  @apply relative flex min-h-11 items-center rounded-xl border border-border bg-surface px-3 text-sm text-foreground;
+
+  &::after {
+    position: absolute;
+    top: 50%;
+    right: 0.875rem;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-right: 1.5px solid var(--muted);
+    border-bottom: 1.5px solid var(--muted);
+    content: "";
+    pointer-events: none;
+    transform: translateY(-70%) rotate(45deg);
+  }
+
+  & select {
+    @apply min-w-0 max-w-full appearance-none bg-transparent py-2.5 pr-8 outline-none;
+
+    @media (width < 40rem) {
+      max-width: none;
+    }
+  }
+}
+
+@utility filter-control {
+  @apply -mx-3 self-stretch px-3 sm:mx-0 sm:self-auto sm:px-0;
+}
+
+@utility modal-backdrop {
+  @apply fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4;
+}
+
+@utility modal-panel {
+  @apply relative z-10 my-auto max-h-[calc(100vh-2rem)] w-full max-w-xl overflow-y-auto rounded-2xl border border-border bg-surface p-5 shadow-2xl sm:p-6;
+}
+
+@utility status-badge {
+  @apply inline-flex w-fit items-center rounded-full px-2.5 py-1 text-[11px] font-medium;
+}
+
+@utility status-planning {
+  @apply bg-violet-500/10 text-violet-700 dark:text-violet-400;
+}
+
+@utility status-progress {
+  @apply bg-accent/10 text-accent;
+}
+
+@utility status-completed {
+  @apply bg-emerald-500/10 text-emerald-700 dark:text-emerald-400;
+}
+
+@utility priority-badge {
+  @apply inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium;
+}
+
+@utility priority-low {
+  @apply bg-surface-raised text-muted;
+}
+
+@utility priority-medium {
+  @apply bg-amber-500/10 text-amber-700 dark:text-amber-400;
+}
+
+@utility priority-high {
+  @apply bg-red-500/10 text-red-700 dark:text-red-400;
+}
+
+@utility danger-text {
+  @apply text-red-700 dark:text-red-400;
+}
+
+@utility tag-badge {
+  @apply inline-flex items-center rounded-md bg-surface-raised px-2 py-0.5 text-[10px] text-muted;
+}
+
+@utility task-row {
+  @apply flex items-start gap-3 px-4 py-4 transition-colors hover:bg-surface-raised/50 sm:px-5;
+}
+
+@utility task-checkbox {
+  @apply mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-md border border-border text-[var(--on-accent)] transition-colors hover:border-accent;
+}
+
+@utility task-checkbox-checked {
+  @apply border-accent bg-accent;
+}
+
+@utility danger-button {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700;
+}
+
+@utility toast-viewport {
+  @apply pointer-events-none fixed bottom-4 right-4 z-[70] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2;
+}
+
+@utility toast {
+  @apply pointer-events-auto flex items-center gap-3 rounded-xl border px-4 py-3 shadow-xl;
+}
+
+@utility toast-success {
+  @apply border-accent/30 bg-surface text-accent;
+}
+
+@utility toast-error {
+  @apply border-red-500/30 bg-surface text-red-700 dark:text-red-400;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    transform: translateX(0) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  :is(button, .primary-button, .secondary-button, .danger-button):not(:disabled):active {
+    transform: none;
+  }
+}
